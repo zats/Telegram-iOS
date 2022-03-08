@@ -1057,10 +1057,10 @@ public class ContactsPeerItemNode: ItemListRevealOptionsItemNode {
                             strongSelf.updateLayout(size: nodeLayout.contentSize, leftInset: params.leftInset, rightInset: params.rightInset)
                             
                             if item.editing.editable {
-                                strongSelf.setRevealOptions((left: [], right: [ItemListRevealOption(key: 0, title: item.presentationData.strings.Common_Delete, icon: .none, color: item.presentationData.theme.list.itemDisclosureActions.destructive.fillColor, textColor: item.presentationData.theme.list.itemDisclosureActions.destructive.foregroundColor)]))
+                                strongSelf.setRevealOptions((left: [], right: [ItemListRevealOption(key: 0, title: item.presentationData.strings.Common_Delete, icon: .none, color: item.presentationData.theme.list.itemDisclosureActions.destructive.fillColor, textColor: item.presentationData.theme.list.itemDisclosureActions.destructive.foregroundColor)]), reduceMotion: false)
                                 strongSelf.setRevealOptionsOpened(item.editing.revealed, animated: animated)
                             } else {
-                                strongSelf.setRevealOptions((left: [], right: peerRevealOptions))
+                                strongSelf.setRevealOptions((left: [], right: peerRevealOptions), reduceMotion: false)
                                 strongSelf.setRevealOptionsOpened(item.editing.revealed, animated: animated)
                             }
                         }

@@ -86,10 +86,12 @@ private final class ItemListRevealOptionNode: ASDisplayNode {
     private var animationNodeFlip = false
     var alignment: ItemListRevealOptionAlignment?
     var isExpanded: Bool = false
+    private let reduceMotion: Bool
     
-    init(title: String, icon: ItemListRevealOptionIcon, color: UIColor, textColor: UIColor) {
+    init(title: String, icon: ItemListRevealOptionIcon, color: UIColor, textColor: UIColor, reduceMotion: Bool) {
         self.backgroundNode = ASDisplayNode()
         self.highlightNode = ASDisplayNode()
+        self.reduceMotion = reduceMotion
         
         self.titleNode = ASTextNode()
         self.titleNode.attributedText = NSAttributedString(string: title, font: icon == .none ? titleFontWithoutIcon : titleFontWithIcon, textColor: textColor)
@@ -214,7 +216,11 @@ private final class ItemListRevealOptionNode: ASDisplayNode {
             }
             
             if (abs(revealFactor) >= 0.4) {
-                animationNode.play()
+                if reduceMotion {
+                    animationNode.seekToEnd()
+                } else {
+                    animationNode.play()
+                }
             } else if abs(revealFactor) < CGFloat.ulpOfOne && !transition.isAnimated {
                 animationNode.reset()
             }
@@ -270,10 +276,12 @@ public final class ItemListRevealOptionsNode: ASDisplayNode {
     private var optionNodes: [ItemListRevealOptionNode] = []
     private var revealOffset: CGFloat = 0.0
     private var sideInset: CGFloat = 0.0
+    private let reduceMotion: Bool
     
-    public init(optionSelected: @escaping (ItemListRevealOption) -> Void, tapticAction: @escaping () -> Void) {
+    public init(optionSelected: @escaping (ItemListRevealOption) -> Void, tapticAction: @escaping () -> Void, reduceMotion: Bool) {
         self.optionSelected = optionSelected
         self.tapticAction = tapticAction
+        self.reduceMotion = reduceMotion
         
         super.init()
     }
@@ -307,7 +315,7 @@ public final class ItemListRevealOptionsNode: ASDisplayNode {
                 node.removeFromSupernode()
             }
             self.optionNodes = options.map { option in
-                return ItemListRevealOptionNode(title: option.title, icon: option.icon, color: option.color, textColor: option.textColor)
+                return ItemListRevealOptionNode(title: option.title, icon: option.icon, color: option.color, textColor: option.textColor, reduceMotion: reduceMotion)
             }
             if isLeft {
                 for node in self.optionNodes.reversed() {

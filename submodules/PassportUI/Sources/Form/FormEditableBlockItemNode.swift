@@ -18,6 +18,7 @@ class FormEditableBlockItemNode<Item: FormControllerItem>: ASDisplayNode, FormCo
     private var leftRevealNode: ItemListRevealOptionsNode?
     private var rightRevealNode: ItemListRevealOptionsNode?
     private var revealOptions: (left: [ItemListRevealOption], right: [ItemListRevealOption]) = ([], [])
+    private var reduceMotion: Bool = false
     
     private var initialRevealOffset: CGFloat = 0.0
     public private(set) var revealOffset: CGFloat = 0.0
@@ -81,7 +82,8 @@ class FormEditableBlockItemNode<Item: FormControllerItem>: ASDisplayNode, FormCo
         self.view.addGestureRecognizer(recognizer)
     }
     
-    func setRevealOptions(_ options: (left: [ItemListRevealOption], right: [ItemListRevealOption])) {
+    func setRevealOptions(_ options: (left: [ItemListRevealOption], right: [ItemListRevealOption]), reduceMotion: Bool) {
+        self.reduceMotion = reduceMotion
         if self.revealOptions == options {
             return
         }
@@ -258,7 +260,7 @@ class FormEditableBlockItemNode<Item: FormControllerItem>: ASDisplayNode, FormCo
                 self?.revealOptionSelected(option, animated: false)
             }, tapticAction: { [weak self] in
                     self?.hapticImpact()
-            })
+            }, reduceMotion: self.reduceMotion)
             revealNode.setOptions(self.revealOptions.left, isLeft: true)
             self.leftRevealNode = revealNode
             
@@ -278,9 +280,9 @@ class FormEditableBlockItemNode<Item: FormControllerItem>: ASDisplayNode, FormCo
         if !self.revealOptions.right.isEmpty {
             let revealNode = ItemListRevealOptionsNode(optionSelected: { [weak self] option in
                 self?.revealOptionSelected(option, animated: false)
-                }, tapticAction: { [weak self] in
-                    self?.hapticImpact()
-            })
+            }, tapticAction: { [weak self] in
+                self?.hapticImpact()
+            }, reduceMotion: self.reduceMotion)
             revealNode.setOptions(self.revealOptions.right, isLeft: false)
             self.rightRevealNode = revealNode
             

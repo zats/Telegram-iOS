@@ -800,7 +800,7 @@ class ItemListStickerPackItemNode: ItemListRevealOptionsItemNode {
                     
                     strongSelf.updateLayout(size: layout.contentSize, leftInset: params.leftInset, rightInset: params.rightInset)
                     
-                    strongSelf.setRevealOptions((left: [], right: packRevealOptions))
+                    strongSelf.setRevealOptions((left: [], right: packRevealOptions), reduceMotion: false)
                     strongSelf.setRevealOptionsOpened(item.editing.revealed, animated: animated)
                     
                     if let updatedFetchSignal = updatedFetchSignal {

@@ -415,7 +415,7 @@ class ItemListWebsiteItemNode: ItemListRevealOptionsItemNode {
                     
                     strongSelf.updateLayout(size: layout.contentSize, leftInset: params.leftInset, rightInset: params.rightInset)
                     
-                    strongSelf.setRevealOptions((left: [], right: peerRevealOptions))
+                    strongSelf.setRevealOptions((left: [], right: peerRevealOptions), reduceMotion: false)
                     strongSelf.setRevealOptionsOpened(item.revealed, animated: animated)
                 }
             })

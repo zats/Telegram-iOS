@@ -234,7 +234,7 @@ class SettingsSearchRecentItemNode: ItemListRevealOptionsItemNode {
                         } else {
                             revealOptions.append(ItemListRevealOption(key: RevealOptionKey.delete.rawValue, title: item.strings.Common_Delete, icon: .none, color: item.theme.list.itemDisclosureActions.destructive.fillColor, textColor: item.theme.list.itemDisclosureActions.destructive.foregroundColor))
                         }
-                        strongSelf.setRevealOptions((left: [], right: revealOptions))
+                        strongSelf.setRevealOptions((left: [], right: revealOptions), reduceMotion: false)
                     }
                 })
             })

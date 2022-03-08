@@ -1956,9 +1956,9 @@ class ChatListItemNode: ItemListRevealOptionsItemNode {
                     strongSelf.updateLayout(size: layout.contentSize, leftInset: params.leftInset, rightInset: params.rightInset)
                     
                     if item.editing {
-                        strongSelf.setRevealOptions((left: [], right: []))
+                        strongSelf.setRevealOptions((left: [], right: []), reduceMotion: item.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
                     } else {
-                        strongSelf.setRevealOptions((left: peerLeftRevealOptions, right: peerRevealOptions))
+                        strongSelf.setRevealOptions((left: peerLeftRevealOptions, right: peerRevealOptions), reduceMotion: item.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
                     }
                     strongSelf.setRevealOptionsOpened(item.hasActiveRevealControls, animated: true)
                     

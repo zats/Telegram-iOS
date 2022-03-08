@@ -398,7 +398,7 @@ final class MentionChatInputPanelItemNode: ListViewItemNode {
                 self?.revealOptionSelected(option, animated: false)
             }, tapticAction: { [weak self] in
                 self?.hapticImpact()
-            })
+            }, reduceMotion: false)
             revealNode.setOptions(self.revealOptions, isLeft: false)
             self.revealNode = revealNode
             

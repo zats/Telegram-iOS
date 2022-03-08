@@ -127,12 +127,12 @@ final class SecureIdValueFormFileItemNode: FormEditableBlockItemNode<SecureIdVal
             self.imageNode.isHidden = false
             self.placeholderNode.isHidden = true
             
-            self.setRevealOptions((left: [], right: [ItemListRevealOption(key: RevealOptionKey.delete.rawValue, title: strings.Common_Delete, icon: .none, color: theme.list.itemDisclosureActions.destructive.fillColor, textColor: theme.list.itemDisclosureActions.destructive.foregroundColor)]))
+            self.setRevealOptions((left: [], right: [ItemListRevealOption(key: RevealOptionKey.delete.rawValue, title: strings.Common_Delete, icon: .none, color: theme.list.itemDisclosureActions.destructive.fillColor, textColor: theme.list.itemDisclosureActions.destructive.foregroundColor)]), reduceMotion: false)
         } else {
             self.imageNode.isHidden = true
             self.placeholderNode.isHidden = false
             
-            self.setRevealOptions((left: [], right: []))
+            self.setRevealOptions((left: [], right: []), reduceMotion: false)
         }
         
         let progressState: RadialStatusNodeState

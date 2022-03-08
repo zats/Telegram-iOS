@@ -1173,7 +1173,7 @@ public class ItemListPeerItemNode: ItemListRevealOptionsItemNode, ItemListItemNo
                     
                     strongSelf.updateLayout(size: layout.contentSize, leftInset: params.leftInset, rightInset: params.rightInset)
                     
-                    strongSelf.setRevealOptions((left: [], right: peerRevealOptions))
+                    strongSelf.setRevealOptions((left: [], right: peerRevealOptions), reduceMotion: false)
                     if let revealed = item.editing.revealed {
                         strongSelf.setRevealOptionsOpened(revealed, animated: animated)
                     }

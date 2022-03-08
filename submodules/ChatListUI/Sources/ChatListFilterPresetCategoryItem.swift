@@ -362,7 +362,7 @@ class ChatListFilterPresetCategoryItemNode: ItemListRevealOptionsItemNode, ItemL
                     
                     strongSelf.updateLayout(size: layout.contentSize, leftInset: params.leftInset, rightInset: params.rightInset)
                     
-                    strongSelf.setRevealOptions((left: [], right: peerRevealOptions))
+                    strongSelf.setRevealOptions((left: [], right: peerRevealOptions), reduceMotion: false)
                     strongSelf.setRevealOptionsOpened(item.isRevealed, animated: animated)
                 }
             })
