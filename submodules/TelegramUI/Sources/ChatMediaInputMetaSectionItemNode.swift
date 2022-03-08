@@ -26,12 +26,13 @@ final class ChatMediaInputMetaSectionItem: ListViewItem {
     let strings: PresentationStrings
     let expanded: Bool
     let selectedItem: () -> Void
+    let reduceMotion: Bool
     
     var selectable: Bool {
         return true
     }
     
-    init(account: Account, inputNodeInteraction: ChatMediaInputNodeInteraction, type: ChatMediaInputMetaSectionItemType, theme: PresentationTheme, strings: PresentationStrings, expanded: Bool, selected: @escaping () -> Void) {
+    init(account: Account, inputNodeInteraction: ChatMediaInputNodeInteraction, type: ChatMediaInputMetaSectionItemType, theme: PresentationTheme, strings: PresentationStrings, expanded: Bool, selected: @escaping () -> Void, reduceMotion: Bool) {
         self.account = account
         self.inputNodeInteraction = inputNodeInteraction
         self.type = type
@@ -39,6 +40,7 @@ final class ChatMediaInputMetaSectionItem: ListViewItem {
         self.theme = theme
         self.strings = strings
         self.expanded = expanded
+        self.reduceMotion = reduceMotion
     }
     
     func nodeConfiguredForParams(async: @escaping (@escaping () -> Void) -> Void, params: ListViewItemLayoutParams, synchronousLoads: Bool, previousItem: ListViewItem?, nextItem: ListViewItem?, completion: @escaping (ListViewItemNode, @escaping () -> (Signal<Void, NoError>?, (ListViewItemApply) -> Void)) -> Void) {
@@ -47,7 +49,7 @@ final class ChatMediaInputMetaSectionItem: ListViewItem {
             Queue.mainQueue().async {
                 node.inputNodeInteraction = self.inputNodeInteraction
                 node.setItem(item: self)
-                node.updateTheme(account: self.account, theme: self.theme, strings: self.strings, expanded: self.expanded)
+                node.updateTheme(account: self.account, theme: self.theme, strings: self.strings, expanded: self.expanded, reduceMotion: self.reduceMotion)
                 node.updateIsHighlighted()
                 node.updateAppearanceTransition(transition: .immediate)
                 
@@ -67,7 +69,7 @@ final class ChatMediaInputMetaSectionItem: ListViewItem {
         Queue.mainQueue().async {
             completion(ListViewItemNodeLayout(contentSize: self.expanded ? expandedBoundingSize : boundingSize, insets: node().insets), { _ in
                 (node() as? ChatMediaInputMetaSectionItemNode)?.setItem(item: self)
-                (node() as? ChatMediaInputMetaSectionItemNode)?.updateTheme(account: self.account, theme: self.theme, strings: self.strings, expanded: self.expanded)
+                (node() as? ChatMediaInputMetaSectionItemNode)?.updateTheme(account: self.account, theme: self.theme, strings: self.strings, expanded: self.expanded, reduceMotion: self.reduceMotion)
             })
         }
     }
@@ -176,7 +178,7 @@ final class ChatMediaInputMetaSectionItemNode: ListViewItemNode {
         }
     }
     
-    func updateTheme(account: Account, theme: PresentationTheme, strings: PresentationStrings, expanded: Bool) {
+    func updateTheme(account: Account, theme: PresentationTheme, strings: PresentationStrings, expanded: Bool, reduceMotion: Bool) {
         let imageSize = CGSize(width: 26.0 * 1.6, height: 26.0 * 1.6)
         self.imageNode.frame = CGRect(origin: CGPoint(x: floor((expandedBoundingSize.width - imageSize.width) / 2.0), y: floor((expandedBoundingSize.height - imageSize.height) / 2.0) + UIScreenPixel), size: imageSize)
         
@@ -238,6 +240,8 @@ final class ChatMediaInputMetaSectionItemNode: ListViewItemNode {
                             animatedStickerNode = current
                         } else {
                             animatedStickerNode = AnimatedStickerNode()
+                            animatedStickerNode.reduceMotion = reduceMotion
+    
                             self.animatedStickerNode = animatedStickerNode
                             self.scalingNode.addSubnode(animatedStickerNode)
                             animatedStickerNode.setup(source: AnimatedStickerResourceSource(account: account, resource: file.resource), width: 128, height: 128, mode: .cached)

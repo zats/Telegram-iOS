@@ -13,17 +13,19 @@ final class ChatMediaInputRecentGifsItem: ListViewItem {
     let expanded: Bool
     let theme: PresentationTheme
     let strings: PresentationStrings
+    let reduceMotion: Bool
     
     var selectable: Bool {
         return true
     }
     
-    init(inputNodeInteraction: ChatMediaInputNodeInteraction, theme: PresentationTheme, strings: PresentationStrings, expanded: Bool, selected: @escaping () -> Void) {
+    init(inputNodeInteraction: ChatMediaInputNodeInteraction, theme: PresentationTheme, strings: PresentationStrings, expanded: Bool, selected: @escaping () -> Void, reduceMotion: Bool) {
         self.inputNodeInteraction = inputNodeInteraction
         self.selectedItem = selected
         self.theme = theme
         self.strings = strings
         self.expanded = expanded
+        self.reduceMotion = reduceMotion
     }
     
     func nodeConfiguredForParams(async: @escaping (@escaping () -> Void) -> Void, params: ListViewItemLayoutParams, synchronousLoads: Bool, previousItem: ListViewItem?, nextItem: ListViewItem?, completion: @escaping (ListViewItemNode, @escaping () -> (Signal<Void, NoError>?, (ListViewItemApply) -> Void)) -> Void) {

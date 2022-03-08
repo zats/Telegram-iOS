@@ -67,7 +67,7 @@ func preparedChatMediaInputPanelEntryTransition(context: AccountContext, from fr
     return ChatMediaInputPanelTransition(deletions: deletions, insertions: insertions, updates: updates, scrollToItem: scrollToItem, updateOpaqueState: ChatMediaInputPanelOpaqueState(entries: toEntries))
 }
 
-func preparedChatMediaInputGridEntryTransition(account: Account, view: ItemCollectionsView, from fromEntries: [ChatMediaInputGridEntry], to toEntries: [ChatMediaInputGridEntry], update: StickerPacksCollectionUpdate, interfaceInteraction: ChatControllerInteraction, inputNodeInteraction: ChatMediaInputNodeInteraction, trendingInteraction: TrendingPaneInteraction) -> ChatMediaInputGridTransition {
+func preparedChatMediaInputGridEntryTransition(account: Account, view: ItemCollectionsView, from fromEntries: [ChatMediaInputGridEntry], to toEntries: [ChatMediaInputGridEntry], update: StickerPacksCollectionUpdate, interfaceInteraction: ChatControllerInteraction, inputNodeInteraction: ChatMediaInputNodeInteraction, trendingInteraction: TrendingPaneInteraction, reduceMotion: Bool) -> ChatMediaInputGridTransition {
     var stationaryItems: GridNodeStationaryItems = .none
     var scrollToItem: GridNodeScrollToItem?
     var animated = false
@@ -144,8 +144,8 @@ func preparedChatMediaInputGridEntryTransition(account: Account, view: ItemColle
     let (deleteIndices, indicesAndItems, updateIndices) = mergeListsStableWithUpdates(leftList: fromEntries, rightList: toEntries)
     
     let deletions = deleteIndices
-    let insertions = indicesAndItems.map { GridNodeInsertItem(index: $0.0, item: $0.1.item(account: account, interfaceInteraction: interfaceInteraction, inputNodeInteraction: inputNodeInteraction, trendingInteraction: trendingInteraction), previousIndex: $0.2) }
-    let updates = updateIndices.map { GridNodeUpdateItem(index: $0.0, previousIndex: $0.2, item: $0.1.item(account: account, interfaceInteraction: interfaceInteraction, inputNodeInteraction: inputNodeInteraction, trendingInteraction: trendingInteraction)) }
+    let insertions = indicesAndItems.map { GridNodeInsertItem(index: $0.0, item: $0.1.item(account: account, interfaceInteraction: interfaceInteraction, inputNodeInteraction: inputNodeInteraction, trendingInteraction: trendingInteraction, reduceMotion: reduceMotion), previousIndex: $0.2) }
+    let updates = updateIndices.map { GridNodeUpdateItem(index: $0.0, previousIndex: $0.2, item: $0.1.item(account: account, interfaceInteraction: interfaceInteraction, inputNodeInteraction: inputNodeInteraction, trendingInteraction: trendingInteraction, reduceMotion: reduceMotion)) }
     
     var firstIndexInSectionOffset = 0
     if !toEntries.isEmpty {
@@ -1159,7 +1159,7 @@ final class ChatMediaInputNode: ChatInputNode {
             }
 
             let (previousPanelEntries, previousGifPaneEntries, previousGridEntries) = previousEntries.swap((panelEntries, gifPaneEntries, gridEntries))
-            return (view, preparedChatMediaInputPanelEntryTransition(context: context, from: previousPanelEntries, to: panelEntries, inputNodeInteraction: inputNodeInteraction, scrollToItem: nil), preparedChatMediaInputPanelEntryTransition(context: context, from: previousGifPaneEntries, to: gifPaneEntries, inputNodeInteraction: inputNodeInteraction, scrollToItem: nil), previousPanelEntries.isEmpty, preparedChatMediaInputGridEntryTransition(account: context.account, view: view, from: previousGridEntries, to: gridEntries, update: update, interfaceInteraction: controllerInteraction, inputNodeInteraction: inputNodeInteraction, trendingInteraction: trendingInteraction), previousGridEntries.isEmpty)
+            return (view, preparedChatMediaInputPanelEntryTransition(context: context, from: previousPanelEntries, to: panelEntries, inputNodeInteraction: inputNodeInteraction, scrollToItem: nil), preparedChatMediaInputPanelEntryTransition(context: context, from: previousGifPaneEntries, to: gifPaneEntries, inputNodeInteraction: inputNodeInteraction, scrollToItem: nil), previousPanelEntries.isEmpty, preparedChatMediaInputGridEntryTransition(account: context.account, view: view, from: previousGridEntries, to: gridEntries, update: update, interfaceInteraction: controllerInteraction, inputNodeInteraction: inputNodeInteraction, trendingInteraction: trendingInteraction, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion), previousGridEntries.isEmpty)
         }
         
         self.disposable.set((transitions

@@ -27,20 +27,22 @@ final class StickerPackPreviewGridItem: GridItem {
     let interaction: StickerPackPreviewInteraction
     let theme: PresentationTheme
     let isEmpty: Bool
+    let reduceMotion: Bool
     
     let section: GridSection? = nil
     
-    init(account: Account, stickerItem: StickerPackItem?, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isEmpty: Bool) {
+    init(account: Account, stickerItem: StickerPackItem?, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isEmpty: Bool, reduceMotion: Bool) {
         self.account = account
         self.stickerItem = stickerItem
         self.interaction = interaction
         self.theme = theme
         self.isEmpty = isEmpty
+        self.reduceMotion = reduceMotion
     }
     
     func node(layout: GridNodeLayout, synchronousLoad: Bool) -> GridItemNode {
         let node = StickerPackPreviewGridItemNode()
-        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isEmpty: self.isEmpty)
+        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isEmpty: self.isEmpty, reduceMotion: self.reduceMotion)
         return node
     }
     
@@ -49,7 +51,7 @@ final class StickerPackPreviewGridItem: GridItem {
             assertionFailure()
             return
         }
-        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isEmpty: self.isEmpty)
+        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isEmpty: self.isEmpty, reduceMotion: self.reduceMotion)
     }
 }
 
@@ -150,7 +152,7 @@ final class StickerPackPreviewGridItemNode: GridItemNode {
     }
     
     private var setupTimestamp: Double?
-    func setup(account: Account, stickerItem: StickerPackItem?, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isEmpty: Bool) {
+    func setup(account: Account, stickerItem: StickerPackItem?, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isEmpty: Bool, reduceMotion: Bool) {
         self.interaction = interaction
         self.theme = theme
         
@@ -171,6 +173,7 @@ final class StickerPackPreviewGridItemNode: GridItemNode {
                     
                     if self.animationNode == nil {
                         let animationNode = AnimatedStickerNode()
+                        animationNode.reduceMotion = reduceMotion
                         self.animationNode = animationNode
                         self.insertSubnode(animationNode, aboveSubnode: self.imageNode)
                         animationNode.started = { [weak self] in

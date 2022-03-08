@@ -261,17 +261,17 @@ enum ChatMediaInputPanelEntry: Comparable, Identifiable {
                 return ChatMediaInputRecentGifsItem(inputNodeInteraction: inputNodeInteraction, theme: theme, strings: strings, expanded: expanded, selected: {
                     let collectionId = ItemCollectionId(namespace: ChatMediaInputPanelAuxiliaryNamespace.recentGifs.rawValue, id: 0)
                     inputNodeInteraction.navigateToCollectionId(collectionId)
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .savedStickers(theme, strings, expanded):
                 return ChatMediaInputMetaSectionItem(account: context.account, inputNodeInteraction: inputNodeInteraction, type: .savedStickers, theme: theme, strings: strings, expanded: expanded, selected: {
                     let collectionId = ItemCollectionId(namespace: ChatMediaInputPanelAuxiliaryNamespace.savedStickers.rawValue, id: 0)
                     inputNodeInteraction.navigateToCollectionId(collectionId)
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .recentPacks(theme, strings, expanded):
                 return ChatMediaInputMetaSectionItem(account: context.account, inputNodeInteraction: inputNodeInteraction, type: .recentStickers, theme: theme, strings: strings, expanded: expanded, selected: {
                     let collectionId = ItemCollectionId(namespace: ChatMediaInputPanelAuxiliaryNamespace.recentStickers.rawValue, id: 0)
                     inputNodeInteraction.navigateToCollectionId(collectionId)
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .trending(elevated, theme, strings, expanded):
                 return ChatMediaInputTrendingItem(inputNodeInteraction: inputNodeInteraction, elevated: elevated, theme: theme, strings: strings, expanded: expanded, selected: {
                     let collectionId = ItemCollectionId(namespace: ChatMediaInputPanelAuxiliaryNamespace.trending.rawValue, id: 0)
@@ -289,23 +289,23 @@ enum ChatMediaInputPanelEntry: Comparable, Identifiable {
             case let .stickerPack(index, info, topItem, theme, expanded, reorderable):
                 return ChatMediaInputStickerPackItem(account: context.account, inputNodeInteraction: inputNodeInteraction, collectionId: info.id, collectionInfo: info, stickerPackItem: topItem, index: index, theme: theme, expanded: expanded, reorderable: reorderable, selected: {
                     inputNodeInteraction.navigateToCollectionId(info.id)
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .stickersMode(theme, strings, expanded):
                 return ChatMediaInputMetaSectionItem(account: context.account, inputNodeInteraction: inputNodeInteraction, type: .stickersMode, theme: theme, strings: strings, expanded: expanded, selected: {
                     inputNodeInteraction.navigateBackToStickers()
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .savedGifs(theme, strings, expanded):
                 return ChatMediaInputMetaSectionItem(account: context.account, inputNodeInteraction: inputNodeInteraction, type: .savedGifs, theme: theme, strings: strings, expanded: expanded, selected: {
                     inputNodeInteraction.setGifMode(.recent)
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .trendingGifs(theme, strings, expanded):
                 return ChatMediaInputMetaSectionItem(account: context.account, inputNodeInteraction: inputNodeInteraction, type: .trendingGifs, theme: theme, strings: strings, expanded: expanded, selected: {
                     inputNodeInteraction.setGifMode(.trending)
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
             case let .gifEmotion(_, theme, strings, emoji, file, expanded):
                 return ChatMediaInputMetaSectionItem(account: context.account, inputNodeInteraction: inputNodeInteraction, type: .gifEmoji(emoji, file), theme: theme, strings: strings, expanded: expanded, selected: {
                     inputNodeInteraction.setGifMode(.emojiSearch(emoji))
-                })
+                }, reduceMotion: context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion)
         }
     }
 }

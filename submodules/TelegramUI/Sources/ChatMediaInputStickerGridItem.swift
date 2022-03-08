@@ -123,10 +123,11 @@ final class ChatMediaInputStickerGridItem: GridItem {
     let inputNodeInteraction: ChatMediaInputNodeInteraction
     let theme: PresentationTheme
     let large: Bool
+    let reduceMotion: Bool
     
     let section: GridSection?
     
-    init(account: Account, collectionId: ItemCollectionId, stickerPackInfo: StickerPackCollectionInfo?, index: ItemCollectionViewEntryIndex, stickerItem: StickerPackItem, canManagePeerSpecificPack: Bool?, interfaceInteraction: ChatControllerInteraction?, inputNodeInteraction: ChatMediaInputNodeInteraction, hasAccessory: Bool, theme: PresentationTheme, large: Bool = false, selected: @escaping () -> Void) {
+    init(account: Account, collectionId: ItemCollectionId, stickerPackInfo: StickerPackCollectionInfo?, index: ItemCollectionViewEntryIndex, stickerItem: StickerPackItem, canManagePeerSpecificPack: Bool?, interfaceInteraction: ChatControllerInteraction?, inputNodeInteraction: ChatMediaInputNodeInteraction, hasAccessory: Bool, theme: PresentationTheme, large: Bool = false, selected: @escaping () -> Void, reduceMotion: Bool) {
         self.account = account
         self.index = index
         self.stickerItem = stickerItem
@@ -135,6 +136,7 @@ final class ChatMediaInputStickerGridItem: GridItem {
         self.theme = theme
         self.large = large
         self.selected = selected
+        self.reduceMotion = reduceMotion
         if collectionId.namespace == ChatMediaInputPanelAuxiliaryNamespace.savedStickers.rawValue {
             self.section = nil
         } else {
@@ -268,6 +270,7 @@ final class ChatMediaInputStickerGridItemNode: GridItemNode {
                 if item.stickerItem.file.isAnimatedSticker || item.stickerItem.file.isVideoSticker {
                     if self.animationNode == nil {
                         let animationNode = AnimatedStickerNode()
+                        animationNode.reduceMotion = item.reduceMotion
                         animationNode.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imageNodeTap(_:))))
                         self.animationNode = animationNode
                         animationNode.started = { [weak self] in

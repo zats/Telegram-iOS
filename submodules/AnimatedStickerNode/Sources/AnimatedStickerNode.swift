@@ -180,6 +180,14 @@ public final class AnimatedStickerNode: ASDisplayNode {
     
     public var stopAtNearestLoop: Bool = false
     
+    public var reduceMotion: Bool = false {
+        didSet {
+            if reduceMotion {
+                stop()
+            }
+        }
+    }
+
     private let playbackStatus = Promise<AnimatedStickerStatus>()
     public var status: Signal<AnimatedStickerStatus, NoError> {
         return self.playbackStatus.get()
@@ -213,7 +221,7 @@ public final class AnimatedStickerNode: ASDisplayNode {
         self.eventsNode = AnimatedStickerNodeDisplayEvents()
         
         super.init()
-        
+                
         self.eventsNode.updated = { [weak self] value in
             guard let strongSelf = self else {
                 return
@@ -360,6 +368,10 @@ public final class AnimatedStickerNode: ASDisplayNode {
     private var isSetUpForPlayback = false
         
     public func play(firstFrame: Bool = false, fromIndex: Int? = nil) {
+        if self.reduceMotion {
+            return
+        }
+
         if !firstFrame {
             switch self.playbackMode {
             case .once:
@@ -406,6 +418,7 @@ public final class AnimatedStickerNode: ASDisplayNode {
                 if let fromIndex = fromIndex {
                     frameSource.skipToFrameIndex(fromIndex)
                 }
+
                 let frameQueue = QueueLocalObject<AnimatedStickerFrameQueue>(queue: queue, generate: {
                     return AnimatedStickerFrameQueue(queue: queue, length: 1, source: frameSource)
                 })

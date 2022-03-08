@@ -338,7 +338,9 @@ public final class ChatImportActivityScreen: ViewController {
             self.presentationData = self.context.sharedContext.currentPresentationData.with { $0 }
             
             self.animationNode = AnimatedStickerNode()
+            self.animationNode.reduceMotion = self.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion
             self.doneAnimationNode = AnimatedStickerNode()
+            self.doneAnimationNode.reduceMotion = self.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion
             self.doneAnimationNode.isHidden = true
             
             self.radialStatus = RadialStatusNode(backgroundNodeColor: .clear)

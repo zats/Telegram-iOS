@@ -200,7 +200,7 @@ enum ChatMediaInputGridEntry: Equatable, Comparable, Identifiable {
         return lhs.index < rhs.index
     }
     
-    func item(account: Account, interfaceInteraction: ChatControllerInteraction, inputNodeInteraction: ChatMediaInputNodeInteraction, trendingInteraction: TrendingPaneInteraction) -> GridItem {
+    func item(account: Account, interfaceInteraction: ChatControllerInteraction, inputNodeInteraction: ChatMediaInputNodeInteraction, trendingInteraction: TrendingPaneInteraction, reduceMotion: Bool) -> GridItem {
         switch self {
         case let .search(theme, strings):
             return PaneSearchBarPlaceholderItem(theme: theme, strings: strings, type: .stickers, activate: {
@@ -217,7 +217,7 @@ enum ChatMediaInputGridEntry: Equatable, Comparable, Identifiable {
                 inputNodeInteraction.dismissPeerSpecificSettings()
             })
         case let .sticker(index, stickerItem, stickerPackInfo, canManagePeerSpecificPack, maybeManageable, theme):
-            return ChatMediaInputStickerGridItem(account: account, collectionId: index.collectionId, stickerPackInfo: stickerPackInfo, index: index, stickerItem: stickerItem, canManagePeerSpecificPack: canManagePeerSpecificPack, interfaceInteraction: interfaceInteraction, inputNodeInteraction: inputNodeInteraction, hasAccessory: maybeManageable, theme: theme, selected: {  })
+            return ChatMediaInputStickerGridItem(account: account, collectionId: index.collectionId, stickerPackInfo: stickerPackInfo, index: index, stickerItem: stickerItem, canManagePeerSpecificPack: canManagePeerSpecificPack, interfaceInteraction: interfaceInteraction, inputNodeInteraction: inputNodeInteraction, hasAccessory: maybeManageable, theme: theme, selected: {  }, reduceMotion: reduceMotion)
         case let .trending(entry):
             return entry.item(account: account, interaction: trendingInteraction, grid: false)
         }

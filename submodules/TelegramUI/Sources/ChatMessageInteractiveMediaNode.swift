@@ -985,6 +985,7 @@ final class ChatMessageInteractiveMediaNode: ASDisplayNode, GalleryItemTransitio
                                 
                                 if currentReplaceAnimatedStickerNode, let updatedAnimatedStickerFile = updateAnimatedStickerFile {
                                     let animatedStickerNode = AnimatedStickerNode()
+                                    animatedStickerNode.reduceMotion = context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion
                                     animatedStickerNode.isUserInteractionEnabled = false
                                     animatedStickerNode.started = {
                                         guard let strongSelf = self else {

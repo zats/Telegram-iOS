@@ -27,20 +27,22 @@ final class StickerPackPreviewGridItem: GridItem {
     let interaction: StickerPackPreviewInteraction
     let theme: PresentationTheme
     let isVerified: Bool
+    let reduceMotion: Bool
     
     let section: GridSection? = nil
     
-    init(account: Account, stickerItem: ImportStickerPack.Sticker, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isVerified: Bool) {
+    init(account: Account, stickerItem: ImportStickerPack.Sticker, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isVerified: Bool, reduceMotion: Bool) {
         self.account = account
         self.stickerItem = stickerItem
         self.interaction = interaction
         self.theme = theme
         self.isVerified = isVerified
+        self.reduceMotion = reduceMotion
     }
     
     func node(layout: GridNodeLayout, synchronousLoad: Bool) -> GridItemNode {
         let node = StickerPackPreviewGridItemNode()
-        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isVerified: self.isVerified)
+        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isVerified: self.isVerified, reduceMotion: self.reduceMotion)
         return node
     }
     
@@ -49,7 +51,7 @@ final class StickerPackPreviewGridItem: GridItem {
             assertionFailure()
             return
         }
-        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isVerified: self.isVerified)
+        node.setup(account: self.account, stickerItem: self.stickerItem, interaction: self.interaction, theme: self.theme, isVerified: self.isVerified, reduceMotion: self.reduceMotion)
     }
 }
 
@@ -100,7 +102,7 @@ final class StickerPackPreviewGridItemNode: GridItemNode {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imageNodeTap(_:))))
     }
     
-    func setup(account: Account, stickerItem: ImportStickerPack.Sticker?, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isVerified: Bool) {
+    func setup(account: Account, stickerItem: ImportStickerPack.Sticker?, interaction: StickerPackPreviewInteraction, theme: PresentationTheme, isVerified: Bool, reduceMotion: Bool) {
         self.interaction = interaction
         self.theme = theme
         
@@ -124,6 +126,7 @@ final class StickerPackPreviewGridItemNode: GridItemNode {
                         
                         if isVerified {
                             let animationNode = AnimatedStickerNode()
+                            animationNode.reduceMotion = reduceMotion
                             self.animationNode = animationNode
                             
                             if let placeholderNode = self.placeholderNode {

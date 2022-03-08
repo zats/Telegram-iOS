@@ -767,6 +767,7 @@ final class ChatListSearchListPaneNode: ASDisplayNode, ChatListSearchPaneNode {
         self.emptyResultsTextNode.isHidden = true
              
         self.emptyResultsAnimationNode = AnimatedStickerNode()
+        self.emptyResultsAnimationNode.reduceMotion = self.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion
         self.emptyResultsAnimationNode.isHidden = true
         
         super.init()

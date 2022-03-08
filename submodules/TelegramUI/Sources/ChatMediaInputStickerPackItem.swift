@@ -23,12 +23,13 @@ final class ChatMediaInputStickerPackItem: ListViewItem {
     let theme: PresentationTheme
     let expanded: Bool
     let reorderable: Bool
+    let reduceMotion: Bool
     
     var selectable: Bool {
         return true
     }
     
-    init(account: Account, inputNodeInteraction: ChatMediaInputNodeInteraction, collectionId: ItemCollectionId, collectionInfo: StickerPackCollectionInfo, stickerPackItem: StickerPackItem?, index: Int, theme: PresentationTheme, expanded: Bool, reorderable: Bool, selected: @escaping () -> Void) {
+    init(account: Account, inputNodeInteraction: ChatMediaInputNodeInteraction, collectionId: ItemCollectionId, collectionInfo: StickerPackCollectionInfo, stickerPackItem: StickerPackItem?, index: Int, theme: PresentationTheme, expanded: Bool, reorderable: Bool, selected: @escaping () -> Void, reduceMotion: Bool) {
         self.account = account
         self.inputNodeInteraction = inputNodeInteraction
         self.collectionId = collectionId
@@ -39,11 +40,13 @@ final class ChatMediaInputStickerPackItem: ListViewItem {
         self.theme = theme
         self.expanded = expanded
         self.reorderable = reorderable
+        self.reduceMotion = reduceMotion
     }
     
     func nodeConfiguredForParams(async: @escaping (@escaping () -> Void) -> Void, params: ListViewItemLayoutParams, synchronousLoads: Bool, previousItem: ListViewItem?, nextItem: ListViewItem?, completion: @escaping (ListViewItemNode, @escaping () -> (Signal<Void, NoError>?, (ListViewItemApply) -> Void)) -> Void) {
         async {
             let node = ChatMediaInputStickerPackItemNode()
+            node.reduceMotion = self.reduceMotion
             node.contentSize = self.expanded ? expandedBoundingSize : boundingSize
             node.insets = ChatMediaInputNode.setupPanelIconInsets(item: self, previousItem: previousItem, nextItem: nextItem)
             node.inputNodeInteraction = self.inputNodeInteraction
@@ -89,6 +92,7 @@ final class ChatMediaInputStickerPackItemNode: ListViewItemNode {
     
     var inputNodeInteraction: ChatMediaInputNodeInteraction?
     var currentCollectionId: ItemCollectionId?
+    var reduceMotion: Bool = false
     private var account: Account?
     private var currentThumbnailItem: StickerPackThumbnailItem?
     private var currentExpanded = false
@@ -373,8 +377,9 @@ final class ChatMediaInputStickerPackItemNode: ListViewItemNode {
                     scalingNode.addSubnode(animatedStickerNode)
                     
                     animatedStickerNode.cloneCurrentFrame(from: self.animatedStickerNode)
-                    animatedStickerNode.play(fromIndex: self.animatedStickerNode?.currentFrameIndex)
-                    
+                    if !reduceMotion {
+                        animatedStickerNode.play(fromIndex: self.animatedStickerNode?.currentFrameIndex)
+                    }
                     snapshotAnimationNode = animatedStickerNode
             }
             

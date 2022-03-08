@@ -439,6 +439,7 @@ class ChatMessageAnimatedStickerItemNode: ChatMessageItemView {
             }
         } else {
             let animationNode = AnimatedStickerNode()
+            animationNode.reduceMotion = item.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion
             animationNode.started = { [weak self] in
                 if let strongSelf = self {
                     strongSelf.imageNode.alpha = 0.0

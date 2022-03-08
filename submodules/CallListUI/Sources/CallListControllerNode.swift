@@ -251,6 +251,7 @@ final class CallListControllerNode: ASDisplayNode {
         self.emptyTextNode.maximumNumberOfLines = 3
         
         self.emptyAnimationNode = AnimatedStickerNode()
+        self.emptyAnimationNode.reduceMotion = self.context.sharedContext.currentPresentationData.with{ $0 }.reduceMotion
         self.emptyAnimationNode.alpha = 0.0
         self.emptyAnimationNode.isUserInteractionEnabled = false
         
